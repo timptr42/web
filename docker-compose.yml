@@ -1,0 +1,9 @@
+services:
+  pattern-web:
+    build:
+      context: .
+    image: timptr-pattern-web:latest
+    container_name: timptr-pattern-web
+    restart: unless-stopped
+    ports:
+      - "${APP_HOST:-127.0.0.1}:${APP_PORT:-8080}:80"
