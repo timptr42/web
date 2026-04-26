@@ -77,18 +77,50 @@
         letter-spacing: 0.08em;
         text-transform: uppercase;
       }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .links a {
+        pointer-events: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 132px;
+        padding: 12px 18px;
+        border: 1px solid rgb(255 255 255 / 16%);
+        border-radius: 999px;
+        background: rgb(255 255 255 / 10%);
+        color: #ffffff;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+      }
+
+      .links a:hover,
+      .links a:focus-visible {
+        border-color: rgb(255 255 255 / 42%);
+        background: rgb(255 255 255 / 18%);
+        transform: translateY(-2px);
+      }
     </style>
   </head>
   <body>
     <canvas id="pattern" aria-hidden="true"></canvas>
     <main class="panel">
       <section class="card">
-        <span class="badge">Docker + Nginx proxy test</span>
-        <h1>www.timptr.ru</h1>
-        <p>
-          Минимальное Docker-приложение работает. Фон генерирует абстрактный
-          изменяющийся узор прямо в браузере.
-        </p>
+        <span class="badge">timptr.ru</span>
+        <h1>Привет!</h1>
+        <p>Тут нечего смотреть</p>
+        <nav class="links" aria-label="Социальные ссылки">
+          <a href="https://t.me/timptr_channel" rel="noopener noreferrer">Telegram</a>
+          <a href="https://vk.com/timptr" rel="noopener noreferrer">VK</a>
+        </nav>
       </section>
     </main>
     <script>
