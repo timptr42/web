@@ -67,7 +67,7 @@ sudo DOMAINS="timptr.ru www.timptr.ru" APP_PORT=8080 scripts/install.sh
 Найти старые конфиги можно так:
 
 ```bash
-sudo nginx -T 2>/dev/null | grep -n "server_name .*timptr\\.ru"
+sudo grep -RIn "server_name .*timptr\\.ru" /etc/nginx/sites-enabled /etc/nginx/conf.d
 ls -la /etc/nginx/sites-enabled/
 ```
 

@@ -44,6 +44,25 @@ ensure_docker_daemon() {
   fi
 }
 
+show_nginx_domain_matches() {
+  local found=0
+
+  echo "Active Nginx server_name entries for target domains:"
+  for domain in ${DOMAINS}; do
+    while IFS= read -r match; do
+      echo "  ${match}"
+      found=1
+    done < <(
+      grep -RIn "server_name" /etc/nginx/sites-enabled /etc/nginx/conf.d 2>/dev/null \
+        | grep -F "${domain}" || true
+    )
+  done
+
+  if [[ "${found}" -eq 0 ]]; then
+    echo "  No active server_name entries found for: ${DOMAINS}"
+  fi
+}
+
 if [[ "${EUID}" -ne 0 ]]; then
   echo "Run this script with sudo/root: sudo DOMAINS=\"${DOMAINS}\" APP_PORT=${APP_PORT} ${0}" >&2
   exit 1
@@ -79,6 +98,7 @@ sed \
   "${NGINX_TEMPLATE}" > "${NGINX_AVAILABLE}"
 
 ln -sfn "${NGINX_AVAILABLE}" "${NGINX_ENABLED}"
+show_nginx_domain_matches
 
 echo "Checking Nginx configuration..."
 nginx -t
