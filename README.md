@@ -55,6 +55,7 @@ sudo DOMAIN=www.timptr.ru APP_PORT=8080 scripts/install.sh
 Скрипт:
 
 - проверит наличие Docker, Docker Compose plugin и Nginx;
+- попробует запустить Docker daemon, если он установлен, но остановлен;
 - соберет и запустит контейнер;
 - создаст конфиг Nginx в `/etc/nginx/sites-available/www.timptr.ru.conf`;
 - включит его через `/etc/nginx/sites-enabled/`;
@@ -62,6 +63,33 @@ sudo DOMAIN=www.timptr.ru APP_PORT=8080 scripts/install.sh
 - перезагрузит Nginx.
 
 Если на сервере уже есть другой Nginx-конфиг с `server_name www.timptr.ru`, отключите или обновите его перед запуском, чтобы не было конфликтующих server block.
+
+## Если Docker daemon не запущен
+
+Ошибка вида:
+
+```text
+Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+```
+
+означает, что Docker установлен, но его сервис не работает. На Ubuntu обычно помогает:
+
+```bash
+sudo systemctl enable --now docker
+sudo systemctl status docker --no-pager
+```
+
+После этого повторите установку:
+
+```bash
+sudo DOMAIN=www.timptr.ru APP_PORT=8080 scripts/install.sh
+```
+
+Если `systemctl` недоступен:
+
+```bash
+sudo service docker start
+```
 
 ## Настройки
 

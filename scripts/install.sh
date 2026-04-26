@@ -20,6 +20,29 @@ require_command() {
   fi
 }
 
+ensure_docker_daemon() {
+  if docker info >/dev/null 2>&1; then
+    return
+  fi
+
+  echo "Docker daemon is not available. Trying to start Docker..."
+
+  if command -v systemctl >/dev/null 2>&1; then
+    systemctl enable --now docker
+  elif command -v service >/dev/null 2>&1; then
+    service docker start
+  else
+    echo "Cannot start Docker automatically: systemctl/service was not found." >&2
+  fi
+
+  if ! docker info >/dev/null 2>&1; then
+    echo "Docker daemon is still unavailable." >&2
+    echo "Check it manually with: sudo systemctl status docker" >&2
+    echo "If Docker is not installed correctly, install docker.io and docker-compose-plugin." >&2
+    exit 1
+  fi
+}
+
 if [[ "${EUID}" -ne 0 ]]; then
   echo "Run this script with sudo/root: sudo DOMAIN=${DOMAIN} APP_PORT=${APP_PORT} ${0}" >&2
   exit 1
@@ -27,6 +50,7 @@ fi
 
 require_command docker
 require_command nginx
+ensure_docker_daemon
 
 if ! docker compose version >/dev/null 2>&1; then
   echo "Docker Compose plugin is required. Install it and rerun the script." >&2
