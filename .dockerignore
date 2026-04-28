@@ -1,5 +1,5 @@
 .git
 .github
-nginx
+nginx/timptr.ru.conf.template
 scripts
 README.md
